@@ -1,9 +1,9 @@
-local Client = script
-local VoteSystem = Client.Parent
-local Systems = VoteSystem.Parent
-local BattleSystem = Systems.Parent
+local Client = script.Parent
+local VoteHandler = Client.Parent
+local Systems = VoteHandler.Parent
+local BattlegroundSystem = Systems.Parent
 
-local Events = BattleSystem.Events
+local Events = BattlegroundSystem.Events
 local battleSystemRemote = Events.Remote
 
 type VoteDataType = { timer: number, votes: { [string]: number } }

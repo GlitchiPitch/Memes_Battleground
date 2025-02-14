@@ -1,7 +1,7 @@
-local BattleSystem = script.Parent
-local Events = BattleSystem.Events
+local BattlegroundSystem = script.Parent
+local Events = BattlegroundSystem.Events
 
-local Types = require(BattleSystem.Types)
+local Types = require(BattlegroundSystem.Types)
 
 local battleSystemRemote = Events.Remote
 
