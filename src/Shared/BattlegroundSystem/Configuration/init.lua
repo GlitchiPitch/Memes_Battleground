@@ -1,0 +1,3 @@
+local Configuration = {}
+
+return Configuration
