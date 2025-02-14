@@ -1,6 +1,16 @@
-local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
 local Variables = script.Variables
+
+local PlacementHandler = script.Parent
+local Handlers = PlacementHandler.Parent
+local BattlegroundSystem = Handlers.Parent
+local Events = BattlegroundSystem.Events
+local remote = Events.Remote
+
+local PlacementConstants = require(PlacementHandler.Constants)
+local remoteActions = require(remote.Actions)
 
 local _connections: { RBXScriptConnection } = {}
 
@@ -21,7 +31,7 @@ local function colorPlaceholderUnit()
     local unitToSpawn = Variables.SelectedUnit.Value :: Model
 	for _, object in unitToSpawn:GetDescendants() do
 		if object:IsA("BasePart") then
-			object.Color3 = color
+			object.Color3 = PlacementConstants.SELECTED_UNIT_COLOR
 		end
 	end
 end

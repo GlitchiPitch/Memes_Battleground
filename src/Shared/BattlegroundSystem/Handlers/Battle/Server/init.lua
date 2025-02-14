@@ -14,10 +14,15 @@ local function prepare(players: { Player })
     end
 end
 
-local function startBattle(battleData: Types.BattleDataType)
+local function startBattle()
+    
+end
+
+local function initialize(battleData: Types.BattleDataType)
     prepare(battleData.Players)
+
 end
 
 return {
-    startBattle = startBattle,
+    initialize = initialize,
 }
