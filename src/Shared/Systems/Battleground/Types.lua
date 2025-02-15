@@ -10,9 +10,13 @@ export type MapType = Folder & {
 }
 
 export type ModeType = "Single" | "Party" | "Versus"
+export type DifficultType = "Easy" | "Medium" | "Hard"
 
 export type BattleDataType = {
-    Players: { Player },
+    Teams: {
+        Red: { Player },
+        Blue: { Player },
+    },
     Mode: ModeType,
     Map: MapType,
 }
