@@ -1,3 +1,4 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local BattleHandler = script.Parent
 local Handlers = BattleHandler.Parent
 local BattlegroundSystem = Handlers.Parent
@@ -6,7 +7,7 @@ local Events = BattlegroundSystem.Events
 local remote = Events.Remote
 local battleSystemRemoteActions = require(remote.Actions)
 
-local Types = require(BattlegroundSystem.Types)
+local Types = require(ReplicatedStorage.Types)
 
 local _connections: { RBXScriptConnection } = {}
 

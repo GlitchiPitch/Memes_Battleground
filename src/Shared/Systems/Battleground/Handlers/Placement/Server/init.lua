@@ -1,5 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+local Types = require(ReplicatedStorage.Types)
+
 local Utility = ReplicatedStorage.Utility
 local clearConnections = require(Utility.clearConnections)
 
@@ -12,7 +14,6 @@ local Events = BattlegroundSystem.Events
 local BattlegroundVariables = BattlegroundSystem.Variables
 
 local Constants = require(BattlegroundSystem.Constants)
-local Types = require(BattlegroundSystem.Types)
 
 local remote = Events.Remote
 local remoteActions = require(remote.Actions)

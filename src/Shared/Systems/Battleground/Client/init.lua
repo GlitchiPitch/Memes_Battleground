@@ -1,7 +1,8 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local BattlegroundSystem = script.Parent
 local Events = BattlegroundSystem.Events
 
-local Types = require(BattlegroundSystem.Types)
+local Types = require(ReplicatedStorage.Types)
 
 local battleSystemRemote = Events.Remote
 

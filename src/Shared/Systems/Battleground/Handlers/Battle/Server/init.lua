@@ -8,7 +8,7 @@ local Handlers = BattleHandler.Parent
 local BattlegroundSystem = Handlers.Parent
 
 local Events = BattlegroundSystem.Events
-local Types = require(BattlegroundSystem.Types)
+local Types = require(ReplicatedStorage.Types)
 
 local event = Events.Event
 local eventActions = require(event.Actions)
@@ -38,7 +38,7 @@ end
 local function actUnits()
     for _, team: Types.TeamType in _battleData.Teams do
         for _, unit in team.Units do
-            unit:act()
+            unit:Act()
         end
     end
 end
@@ -49,7 +49,6 @@ local function startBattle()
             if checkFinishBattle() then
                 break
             end
-
             actUnits()
         end
         finishBattle()
