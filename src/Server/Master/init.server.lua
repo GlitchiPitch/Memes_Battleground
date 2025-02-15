@@ -1,6 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Modules = {
     BattlegroundSystem = ReplicatedStorage.BattlegroundSystem,
+    UnitSystem = ReplicatedStorage
 }
 
 local function initialize()

@@ -3,8 +3,8 @@ local Handlers = BattleHandler.Parent
 local BattlegroundSystem = Handlers.Parent
 
 local Events = BattlegroundSystem.Events
-local battleSystemRemote = Events.Remote
-local battleSystemRemoteActions = require(battleSystemRemote.Actions)
+local remote = Events.Remote
+local battleSystemRemoteActions = require(remote.Actions)
 
 local Types = require(BattlegroundSystem.Types)
 
@@ -18,7 +18,7 @@ local function prepare()
     
 end
 
-local function battleSystemRemoteConnect(action: string, ...: any)
+local function remoteConnect(action: string, ...: any)
     local actions = {
         [battleSystemRemoteActions.prepare] = prepare,
     }
@@ -28,14 +28,14 @@ local function battleSystemRemoteConnect(action: string, ...: any)
     end
 end
 
-local function startBattle()
+local function initialize()
     table.insert(
         _connections,
-        battleSystemRemote.OnClientEvent:Connect(battleSystemRemoteConnect)
+        remote.OnClientEvent:Connect(remoteConnect)
     )
 end
 
 
 return {
-    startBattle = startBattle,
+    initialize = initialize,
 }

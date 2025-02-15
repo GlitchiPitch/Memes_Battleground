@@ -1,3 +1,5 @@
+local Debris = game:GetService("Debris")
+local TweenService = game:GetService("TweenService")
 local boostList = {
     ""
 }
@@ -19,14 +21,19 @@ type UnitStatsFolder = Folder & {
 }
 
 type WizardClassType = typeof(WizardClass) & {
-    model: Model,
+    model: Model & { Humanoid: Humanoid },
     name: string,
     stats: UnitStatsFolder,
     configuration: {
         targetDistance: number,
         spellDistance: number,
         evadeChance: number,
-        magicType: "Fire" | "Ice",
+        magicInstance: BasePart,
+        magicSpeed: number,
+    },
+    animations: { 
+        attack: number | AnimationTrack,
+        die: number | AnimationTrack,
     },
     boosts: { [string]: number },
     effects: { [string]: number },
@@ -41,8 +48,14 @@ function WizardClass.new() : WizardClassType
         targetDistance = 10,
         spellDistance = 10,
         evadeChance = 1,
-        magicType = "Fire",
+        magicInstance = Instance.new("Part"),
+        magicSpeed = 100,
     }
+
+    self.animations = {
+        attack = 0,
+    }
+
     self.boosts = {}
     self.effects = {}
     return setmetatable(self, WizardClass)
@@ -70,16 +83,41 @@ WizardClass.findTarget = function(self: WizardClassType, enemyUnits: { Model }) 
 end
 
 WizardClass.attack = function(self: WizardClassType)
+    local enemy = self.stats.Target.Value :: Model
     local function spellMagic()
+        self.animations.attack:Play()
+        -- task.wait(self.animations.attack.Length)
+        local magicInstance = self.configuration.magicInstance:Clone()
+        local distance = getMagnitude(enemy, self.model)
+        local tweenTime = distance / self.configuration.magicSpeed
+        local tweenInfo = TweenInfo.new(tweenTime)
+        magicInstance.Parent = self.model
+        local tween = TweenService:Create(magicInstance, tweenInfo, {CFrame = enemy:GetPivot()})
+        tween:Play()
         
     end
 
-    local enemy = self.stats.Target.Value :: Model
     if enemy then
-        if self.configuration.spellDistance < getMagnitude(enemy, self.model)
+        if self.configuration.spellDistance < getMagnitude(enemy, self.model) then
+            spellMagic()
+        end
     end
 
     print(self.name, "Attack")
+end
+
+WizardClass.loadAnimation = function(self: WizardClassType)
+    local humanoid = self.model.Humanoid
+    local animator = humanoid:FindFirstChildOfClass("Animator")
+    for animName, animationId in self.animations do
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationId
+        self.animations[animName] = animator:LoadAnimation(animation)
+    end
+end
+
+WizardClass.initialize = function(self: WizardClassType)
+    self:loadAnimation()
 end
 
 local ShrekWizard = {}

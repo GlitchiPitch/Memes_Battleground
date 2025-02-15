@@ -20,7 +20,6 @@ end
 
 local function initialize(battleData: Types.BattleDataType)
     prepare(battleData.Players)
-
 end
 
 return {
