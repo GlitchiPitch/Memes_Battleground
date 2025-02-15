@@ -4,6 +4,7 @@ local Actions = {
     vote = "vote",
 
     startPlacement = "startPlacement",
+    playerReady = "playerReady",
 }
 
 return Actions

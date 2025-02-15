@@ -1,8 +1,8 @@
 local Actions = {
     startPlacement = "startPlacement",
     finishPlacement = "finishPlacement",
-    initializeBattle = "startBattle",
-
+    initializeBattle = "initializeBattle",
+    startBattle = "startBattle",
 }
 
 return Actions

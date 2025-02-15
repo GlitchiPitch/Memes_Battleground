@@ -49,7 +49,7 @@ local function finishVote()
 end
 
 local function checkStartGame()
-    if Variables.VotedPlayersCount.Value == #_battleData.Teams[Constants.DEFAULT_TEAM] then
+    if Variables.VotedPlayersCount.Value == #_battleData.Teams[Constants.DEFAULT_TEAM].Players then
         finishVote()
     end
 end
@@ -83,7 +83,7 @@ end
 local function initialize(battleData: Types.BattleDataType)
     _battleData = battleData
     setup()
-    startVote(battleData.Teams[Constants.DEFAULT_TEAM])
+    startVote(battleData.Teams[Constants.DEFAULT_TEAM].Players)
 end
 
 return {
