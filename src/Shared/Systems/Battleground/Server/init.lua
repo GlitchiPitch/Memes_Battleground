@@ -1,3 +1,7 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Types = require(ReplicatedStorage.Types)
+
 local BattlegroundSystem = script.Parent
 
 local Events = BattlegroundSystem.Events
@@ -8,8 +12,6 @@ local Maps: Folder & { Model }
 local VoteHandler = require(Handlers.Vote)
 local BattleHandler = require(Handlers.Battle)
 local PlacementHandler = require(Handlers.Placement)
-
-local Types = require(BattlegroundSystem.Types)
 
 local event = Events.Event
 local eventActions = require(event.Actions)
