@@ -5,7 +5,6 @@ local Actions = {
 
     startPlacement = "startPlacement",
     finishPlacement = "finishPlacement",
-    placeUnit = "placeUnit",
     
     playerReady = "playerReady",
 }

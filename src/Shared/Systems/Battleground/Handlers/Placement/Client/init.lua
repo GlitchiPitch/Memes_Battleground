@@ -1,8 +1,6 @@
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-
 
 local Variables = script.Variables
 
@@ -10,6 +8,10 @@ local PlacementHandler = script.Parent
 local Handlers = PlacementHandler.Parent
 local BattlegroundSystem = Handlers.Parent
 local Events = BattlegroundSystem.Events
+
+local Utility = BattlegroundSystem.Utility
+local checkValidArea = require(Utility.checkValidArea)
+local calculateUnitCFrame = require(Utility.calculateUnitCFrame)
 
 local Constants = require(BattlegroundSystem.Constants)
 
@@ -27,27 +29,13 @@ local _connectionKeys = {
 	onSelectedUnitChanged = "onSelectedUnitChanged",
 	onSelectedUnitIdChanged = "onSelectedUnitIdChanged",
 }
+local _raycastBlackList: { any } = {}
 
 -- add different contorls for devices
 local _inputKeys: { [string]: { [string]: Enum.KeyCode} } = {
-	PlaceUnit = {
-		
+	PlaceUnit = {	
 	},
-
 }
-
-local _raycastBlackList: { any } = {}
-
-local function calculateUnitCFrame(raycastResultPosition: Vector3, additionY: number)
-	local placePosition = Vector3.new(
-		raycastResultPosition.X,
-		raycastResultPosition.Y + additionY,
-		raycastResultPosition.Z
-	)
-	local cframe = CFrame.new(placePosition) * CFrame.Angles(0, math.rad(-90), 0)
-
-	return cframe
-end
 
 local function mouseRaycast() : RaycastResult
 	local mousePos = UserInputService:GetMouseLocation()
@@ -82,12 +70,13 @@ end
 local function placeUnit()
 	local raycastResult = mouseRaycast()
 	local unitToSpawn = Variables.SelectedUnit.Value :: Model
-	if not checkValidRaycastResult(raycastResult) or not unitToSpawn then
+	local selectedUnitId = Variables.SelectedUnitId.Value :: string
+	if not checkValidRaycastResult(raycastResult) or not unitToSpawn or not selectedUnitId then
 		return
 	end
 
 	local cframe = calculateUnitCFrame(raycastResult.Position, unitToSpawn.Humanoid.HipHeight + unitToSpawn.PrimaryPart.Size.Y / 2)
-	remote:FireServer(remoteActions.placeUnit, cframe)
+	remote:FireServer(remoteActions.spawnUnit, selectedUnitId, cframe)
 	unitToSpawn:Destroy()
 	Variables.SelectedUnit.Value = nil
 end
@@ -131,7 +120,9 @@ local function onSelectedUnitChanged(value: Model?)
 		_connections[_connectionKeys.onInputBegan] = UserInputService.InputBegan:Connect(onInputBegan)
 	else
 		_connections[_connectionKeys.updatePlaceOfUnit]:Disconnect()
+		_connections[_connectionKeys.onInputBegan]:Disconnect()
 		_connections[_connectionKeys.updatePlaceOfUnit] = nil
+		_connections[_connectionKeys.onInputBegan] = nil
     end
 end
 
@@ -151,10 +142,6 @@ local function onSelectedUnitIdChanged(value: string)
     end
 end
 
-local function on()
-	
-end
-
 local function finishPlacement()
 	for connectName, _ in _connections do
 		if connectName ~= _connectionKeys.remoteConnect then
@@ -167,7 +154,6 @@ end
 local function startPlacement()
 	_connections[_connectionKeys.onSelectedUnitIdChanged] = Variables.SelectedUnitId.Changed:Connect(onSelectedUnitIdChanged)
 	_connections[_connectionKeys.onSelectedUnitChanged] = Variables.SelectedUnit.Changed:Connect(onSelectedUnitChanged)
-	
 end
 
 local function remoteConnect(action: string, ...: any)

@@ -69,9 +69,17 @@ local function playerReady(player: Player)
     end
 end
 
-local function spawnUnit(player: Player, selectedUnit: Types.UnitType )
+local function getPlayerUnit(selectedUnitId: string) : Types.UnitType
+    return true
+end
+
+local function spawnUnit(player: Player, selectedUnitId: string, cframe: CFrame )
     local playerTeam = player:GetAttribute(Constants.PLAYER_TEAM_ATTRIBUTE) :: string
-    
+    local selectedUnit = getPlayerUnit(selectedUnitId)
+    if not selectedUnit then
+        return
+    end
+
     -- check player has unit
     -- can spawn
     -- checkValidArea
