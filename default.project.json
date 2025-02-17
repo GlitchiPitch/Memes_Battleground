@@ -8,6 +8,9 @@
     "ServerScriptService": {
       "$path": "src/Server"
     },
+    "ServerStorage":{
+      "$path": "src/Storage"
+    },
     "StarterGui": {
       "$path": "src/StarterGui"
     }
